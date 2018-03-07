@@ -2,11 +2,20 @@
 
 A Clojure test-runner compatible with tests written using `clojure.test`.
 
-Keep your existing `deftest`s, but gain flexibility around how you run them.
+Keep your existing `deftest`s, but gain flexibility around how you run
+them.
+
+This version, `io.synple/circleci.test "0.5.0-alpha2"` updates the
+junit reporter to be compatible with `org.clojure/data.xml` v0.0.8
+(current stable) and v0.2.0-alpha5 (latest alpha, that includes xml
+namespace and clojurescript support).
+
+We're expecting to merge these updates into the main circleci release
+soon.
 
 ## Usage
 
-Add `[circleci/circleci.test "0.4.1"]` to your `:dependencies` under `:dev`.
+Add `[io.synple/circleci.test "0.5.0-alpha2"]` to your `:dependencies` under `:dev`.
 
 It's recommended to use this set of Leiningen aliases:
 
