@@ -1,6 +1,6 @@
-(defproject griffin/circleci.test "0.5.0-alpha3-SNAPSHOT"
+(defproject griffin/circleci.test "0.5.0-alpha3"
   :description "clojure.test compatible test-runner"
-  :url "https://github.com/circleci/circleci.test"
+  :url "https://github.com/griffinbank/circleci.test"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :pedantic? :abort
