@@ -1,4 +1,4 @@
-(defproject griffinbank/circleci.test "0.5.0-alpha2"
+(defproject griffin/circleci.test "0.5.0-alpha3-SNAPSHOT"
   :description "clojure.test compatible test-runner"
   :url "https://github.com/circleci/circleci.test"
   :license {:name "Eclipse Public License"
