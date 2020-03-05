@@ -253,20 +253,17 @@
    (let [selector (lookup-selector (read-config!) (read-string selector-str))
          opts (read-string opts-str)
          {:keys [select-nses] :or {select-nses false}} opts]
-     (if select-nses
-       (let [nses (->> dirs-str
+     (let [nses (if select-nses
+                  (->> dirs-str
                        read-string
                        nses-in-directories
                        (filter (partial select-ns-str selector)))
-             _ (apply require :reload nses)
-             summary (run-selected-tests selector nses)]
-         (System/exit (+ (:error summary) (:fail summary))))
-       (let [nses (->> dirs-str
+                  (->> dirs-str
                        read-string
-                       nses-in-directories)
+                       nses-in-directories))
              _ (apply require :reload nses)
              summary (run-selected-tests selector nses)]
-         (System/exit (+ (:error summary) (:fail summary))))))))
+         (System/exit (+ (:error summary) (:fail summary)))))))
 
 (defn -main
   [& raw-args]
