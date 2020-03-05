@@ -44,7 +44,7 @@ forms which aren't tagged with that metadata to be skipped.
     $ lein run -m circleci.test :integration my.first.test.ns
 
 If you need more flexibility in your test selectors you can define arbitrary
-selector functions in `dev-resources/circleci_test/config.clj`:
+selector functions in `dev-resources/circleci_test/config.clj` (substitute `dev-resources` with a path from `:resource-paths` in your `project.clj`):
 
 ```clj
 {:selectors {:all (constantly true)
@@ -52,10 +52,14 @@ selector functions in `dev-resources/circleci_test/config.clj`:
              :default (complement :flaky)}}
 ```
 
-If you have the Leiningen `:aliases` set up as per above, you can pass
-in a test selector as a command-line argument:
+The selector can be passed in via command-line argument, as follows:
 
-    $ lein test :acceptance
+    $ lein run -m circleci.test/dir "[\"path/to/dir/with/tests\"]" :integration
+
+This will run the selector against all vars in the namespaces under the `path/to/dir/with/tests`.
+To make sure the said namespaces are also filtered by the selector, pass in the options map `{:select-nses true}`:
+
+    $ lein run -m circleci.test/dir "[\"path/to/dir/with/tests\"]" :integration "{:select-nses true}"
 
 ### Reporters
 

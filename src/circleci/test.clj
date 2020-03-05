@@ -224,6 +224,9 @@
         :when (re-find #"\.clj$" (str f))]
     (second (read-string (slurp f)))))
 
+(defn- select-ns-str [selector ns-str]
+  (selector {:ns ns-str}))
+
 (defn dir
   ([dirs-str] (dir dirs-str ":default"))
   ([dirs-str selector-str]
@@ -238,7 +241,32 @@
          _ (apply require :reload nses)
          selector (lookup-selector (read-config!) (read-string selector-str))
          summary (run-selected-tests selector nses)]
-     (System/exit (+ (:error summary) (:fail summary))))))
+     (System/exit (+ (:error summary) (:fail summary)))))
+  ([dirs-str selector-str opts-str]
+   (when-not (try (and (map? (read-string opts-str))
+                       (contains? (read-string opts-str) :select-nses)
+                       (coll? (read-string dirs-str)))
+                  (catch Exception _))
+     (binding [*out* *err*]
+       (println "Please see the readme for usage of this function.")
+       (System/exit 1)))
+   (let [selector (lookup-selector (read-config!) (read-string selector-str))
+         opts (read-string opts-str)
+         {:keys [select-nses] :or {select-nses false}} opts]
+     (if select-nses
+       (let [nses (->> dirs-str
+                       read-string
+                       nses-in-directories
+                       (filter (partial select-ns-str selector)))
+             _ (apply require :reload nses)
+             summary (run-selected-tests selector nses)]
+         (System/exit (+ (:error summary) (:fail summary))))
+       (let [nses (->> dirs-str
+                       read-string
+                       nses-in-directories)
+             _ (apply require :reload nses)
+             summary (run-selected-tests selector nses)]
+         (System/exit (+ (:error summary) (:fail summary))))))))
 
 (defn -main
   [& raw-args]
